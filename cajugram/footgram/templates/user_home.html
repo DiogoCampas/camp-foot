@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-between my-3">
+        <div class="col-md-2 text-center">
+            <!-- Refresh Icon -->
+            <a href="{% url 'user_home' %}" class="btn btn-outline-primary">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </a>
+        </div>
+        <div class="col-md-6">
+            <!-- Search Bar -->
+            <form method="GET" action="{% url 'user_home' %}">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Search publications..." value="{{ request.GET.search }}">
+                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Publications Section -->
+    <div class="row">
+        {% for publication in publications %}
+        <div class="col-md-12 my-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ publication.title }}</h5>
+                    <p class="card-text">{{ publication.content }}</p>
+                    <p class="card-text"><small class="text-muted">{{ publication.author }} - {{ publication.date_posted }}</small></p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No publications found.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

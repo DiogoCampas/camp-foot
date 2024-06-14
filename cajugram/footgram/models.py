@@ -4,51 +4,37 @@ import datetime as dt
 
 # Create your models here.
 
-class Profile(models.Model):  #Profile class - all users of the app
-    class Meta:
-        db_table = 'profile'
-
-    bio = models.TextField(max_length=200, null=True, blank=True, default="bio")
-    user=models.OneToOneField(User, on_delete=models.CASCADE, blank=True, related_name="profile")
-    followers = models.ManyToManyField(User, related_name="followers", blank=True)
-    following = models.ManyToManyField(User, related_name="following", blank=True)
-    position = models.TextField(max_length=200, null=True, blank=True, default="bio")
-    club = models.TextField(max_length=200, null=True, blank=True, default="bio")
-
-    # saves a profile
-    def save_profile(self):     
-        self.save()
-
+class Record(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50)
+    email = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    club = models.CharField(max_length=200)
     
-    # deletes a profile
-    def delete_profile(self):   
-        self.delete()
+    def __str__(self):
+        return(f"{self.first_name} {self.last_name}")
+    
 
-    # user follows another user
-    def follow_user(self, follower):
-        return self.following.add(follower)
 
-    # user unfllows another user
-    def unfollow_user(self, to_unfollow):
-        return self.following.remove(to_unfollow)
 
-    # check if user follows a certain user
-    def is_following(self, checkuser):
-        return checkuser in self.following.all()
+class Publication(models.Model):
+    title = models.CharField(max_length=5000)
+    content = models.TextField()
+    author = models.ForeignKey(Record, on_delete=models.CASCADE)
+    date_posted = models.DateTimeField(auto_now_add=True)
 
-    # retrieve the number of followers of a certain user
-    def get_number_of_followers(self):
-        if self.followers.count():
-            return self.followers.count()
-        else:
-            return 0
+    def __str__(self):
+        return self.title
 
-    # retrieve the number of users that a certain user follows
-    def get_number_of_following(self):
-        if self.following.count():
-            return self.following.count()
-        else:
-            return 0
+
+
+
+
+
+
+
 
     
     

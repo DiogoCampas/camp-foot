@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%@tpk)0!94a%p1+xs6@+b7ibaww_)itqo#uy5($l8v6y7zk2c0'
+#SECRET_KEY = 'django-insecure-%@tpk)0!94a%p1+xs6@+b7ibaww_)itqo#uy5($l8v6y7zk2c0'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages', 
     'django.contrib.staticfiles',
-    'footgram'
+    'django.contrib.sessions',
+    'footgram',
 ]
 
 MIDDLEWARE = [
@@ -74,13 +79,14 @@ WSGI_APPLICATION = 'cajugram.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_camps',
-        'USER': 'dcampas',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '3306',
-}
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        'HOST': env("DB_HOST"),
+        'PORT': env("DB_PORT"),
+    }}
 
 
 # Password validation
