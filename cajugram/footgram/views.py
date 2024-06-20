@@ -48,6 +48,14 @@ def signup_view(request):
 
 @login_required
 def user_home(request):
+    
+    query = request.GET.get('search')
+    if query:
+        users = Record.objects.filter(first_name=query).values() | Record.objects.filter(last_name=query).values()
+    else:
+        users = Record.objects.none()
+        
     # Fetch publications from the database (assuming you have a model named 'Publication')
     publications = Publication.objects.all()
     return render(request, 'user_home.html', {'publications': publications})
+

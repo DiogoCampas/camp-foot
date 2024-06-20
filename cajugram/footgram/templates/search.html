@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ message }}</h2>
+
+    {% if profiles %}
+        <div class="row">
+            {% for profile in profiles %}
+                <div class="card my-2">
+                    <div class="card-body">
+                        <p class="card-text">{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                        <p class="card-text">{{ profile.user.email }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No users found.</p>
+    {% endif %}
+</div>
+{% endblock %}
